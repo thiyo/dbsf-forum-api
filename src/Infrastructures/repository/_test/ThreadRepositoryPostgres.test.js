@@ -2,6 +2,7 @@ const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const pool = require('../../database/postgres/pool');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
+const NewThread = require('../../../Domains/threads/entities/NewThread');
 
 describe('ThreadRepositoryPostgres', () => {
   afterEach(async () => {
@@ -15,6 +16,34 @@ describe('ThreadRepositoryPostgres', () => {
 
   describe('addThread', () => {
     it('should persist new thread and return added thread correctly', async () => {
+
+      //Arrange
+      await UsersTableTestHelper.addUser({ id: 'user-123' })
+      const newThread = new NewThread({
+        title: 'Pilpres 2024',
+        body: 'Debat Capres',
+        owner: 'user-123',
+      });
+
+      const fakeIdGenerator = () => '123';
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      //Action
+      const addedThread = await threadRepositoryPostgres.addThread(newThread);
+
+      //Assert
+      expect(addedThread.id).toEqual('thread-123');
+      expect(addedThread.title).toEqual(newThread.title);
+      expect(addedThread.owner).toEqual(newThread.owner);
+
+      const thread = await ThreadsTableTestHelper.findThreadById('thread-123');
+      expect(thread).toBeDefined();
+      expect(thread.id).toEqual('thread-123');
+      expect(thread.title).toEqual(newThread.title);
+      expect(thread.owner).toEqual(newThread.owner);
+      expect(thread.body).toEqual(newThread.body);
+      expect(thread.date).toBeDefined();
+
       /**
        * TODO 4
        * Lengkapi pengujian fungsi `addThread` agar kita dapat
