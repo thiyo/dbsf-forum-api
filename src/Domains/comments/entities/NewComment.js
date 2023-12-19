@@ -22,8 +22,10 @@ class NewComment {
     this.owner = owner;
   }
 
-  _verifyPayload({ threadId, content, owner }) {
-    // Lengkapi kodenya ...
+  _verifyPayload(payload) {
+    // Lengkapi kodenya ...v
+    const { threadId, content, owner } = payload;
+
     if (!threadId || !content || !owner) {
       throw new Error('NEW_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }

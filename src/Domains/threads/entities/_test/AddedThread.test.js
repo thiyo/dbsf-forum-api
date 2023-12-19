@@ -26,6 +26,21 @@ describe('AddedThread entities', () => {
   });
 
   it('should create addedThread object correctly', () => {
+
+    //Arrange
+    const payload = {
+      id: "thread-123",
+      title: "Pilpress 2024",
+      owner: "user-123",
+    };
+
+    //action
+    const addedThread = new AddedThread(payload);
+
+    //Assert
+    expect(addedThread.id).toEqual(payload.id);
+    expect(addedThread.title).toEqual(payload.title);
+    expect(addedThread.owner).toEqual(payload.owner);
     /**
      * @TODO 2
      * Lengkapi pengujian pada skenario berhasil membuat objek addedThread.
