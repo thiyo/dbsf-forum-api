@@ -18,6 +18,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
+        timeout : 2m
         script: |
           cd ~/dbsf-forum-api
           git pull origin main
